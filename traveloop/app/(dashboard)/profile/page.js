@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import { useSession, signOut } from "next-auth/react";
+import { useParams, useRouter } from "next/navigation";
 import { 
   User, 
   Settings, 
@@ -159,6 +160,7 @@ const TripCard = ({ trip, isCompleted }) => {
 
 export default function ProfilePage() {
   const { data: session, update: updateSession } = useSession();
+  const router = useRouter();
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -268,6 +270,17 @@ export default function ProfilePage() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-white">
       <div className="w-12 h-12 border-4 border-black border-t-blue-500 rounded-full animate-spin mb-4" />
       <span className="font-black uppercase italic tracking-tighter">Loading Your Explorer Profile...</span>
+    </div>
+  );
+
+  if (!profileData) return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white p-8 text-center">
+      <AlertTriangle className="h-12 w-12 text-red-500 mb-4" />
+      <h2 className="text-2xl font-black uppercase italic tracking-tighter mb-2">Profile Unreachable</h2>
+      <p className="text-sm font-bold text-gray-500 mb-6 uppercase tracking-widest max-w-md">We couldn't retrieve your profile data. This might be a temporary connection issue.</p>
+      <Button onClick={() => window.location.reload()} className="bg-black text-white rounded-none font-black uppercase italic h-12 px-8 shadow-[4px_4px_0px_0px_rgba(59,130,246,1)]">
+        Retry Connection
+      </Button>
     </div>
   );
 

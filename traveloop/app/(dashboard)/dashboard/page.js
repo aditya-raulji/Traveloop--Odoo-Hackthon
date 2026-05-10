@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Plus, MapPin, Calendar, ArrowRight } from "lucide-react";
+import { Plus, MapPin, Calendar, ArrowRight, Compass } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PageTopBar from "@/components/shared/PageTopBar";
 import { format } from "date-fns";

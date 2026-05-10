@@ -585,7 +585,10 @@ export default function AdvancedItineraryPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           prompt: promptText,
-          tripContext: { name: trip.name, dates: `${trip.startDate} to ${trip.endDate}` }
+          tripContext: { 
+            name: trip?.name || "My Trip", 
+            dates: trip?.startDate ? `${trip.startDate} to ${trip.endDate}` : "Flexible dates" 
+          }
         })
       });
       

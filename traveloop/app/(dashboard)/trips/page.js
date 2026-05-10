@@ -338,11 +338,15 @@ export default function MyTripsPage() {
     }
   };
 
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   // Filter & Search Logic
   const filteredTrips = useMemo(() => {
     return trips.filter(t => {
       const query = searchQuery.toLowerCase();
-      const matchName = t.name.toLowerCase().includes(query);
+      const name = t.name || "";
+      const matchName = name.toLowerCase().includes(query);
       const matchCity = t.stops?.some(s => s.city?.name?.toLowerCase().includes(query));
       return matchName || matchCity;
     });
@@ -350,6 +354,7 @@ export default function MyTripsPage() {
 
   // Grouping Logic
   const groupedTrips = useMemo(() => {
+    if (!mounted) return [];
     const today = startOfDay(new Date());
     
     if (activeGroupBy === "status") {
@@ -385,11 +390,17 @@ export default function MyTripsPage() {
     }
 
     return [{ label: "All Trips", key: "all", trips: filteredTrips }];
-  }, [filteredTrips, activeGroupBy]);
+  }, [filteredTrips, activeGroupBy, mounted]);
 
-  const ongoingCount = trips.filter(t => t.startDate && t.endDate && isWithinInterval(new Date(), { start: new Date(t.startDate), end: new Date(t.endDate) })).length;
-  const upcomingCount = trips.filter(t => t.startDate && isAfter(new Date(t.startDate), new Date())).length;
-  const completedCount = trips.filter(t => t.endDate && isBefore(new Date(t.endDate), new Date())).length;
+  const { ongoingCount, upcomingCount, completedCount } = useMemo(() => {
+    if (!mounted) return { ongoingCount: 0, upcomingCount: 0, completedCount: 0 };
+    const today = new Date();
+    return {
+      ongoingCount: trips.filter(t => t.startDate && t.endDate && isWithinInterval(today, { start: new Date(t.startDate), end: new Date(t.endDate) })).length,
+      upcomingCount: trips.filter(t => t.startDate && isAfter(new Date(t.startDate), today)).length,
+      completedCount: trips.filter(t => t.endDate && isBefore(new Date(t.endDate), today)).length
+    };
+  }, [trips, mounted]);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
