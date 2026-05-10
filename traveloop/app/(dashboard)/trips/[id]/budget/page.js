@@ -17,8 +17,10 @@ import {
   Hotel,
   Utensils,
   Target,
-  FileText
+  FileText,
+  CheckCircle2
 } from "lucide-react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -104,9 +106,17 @@ export default function TripBudgetPage() {
           </Button>
           <div>
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 mb-2 block">FINANCIAL_MODULE // ALPHA</span>
-            <h1 className="text-5xl font-black uppercase italic tracking-tighter leading-none">
-              Budget <span className="text-gray-300">Tracker</span>
-            </h1>
+            <div className="flex flex-col md:flex-row md:items-center gap-4">
+              <h1 className="text-5xl font-black uppercase italic tracking-tighter leading-none">
+                Budget <span className="text-gray-300">Tracker</span>
+              </h1>
+              <Button asChild variant="outline" className="h-10 border-2 border-black rounded-none px-4 flex items-center gap-2 hover:bg-green-500 hover:text-white transition-all shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-none">
+                <Link href={`/trips/${tripId}/packing`} className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4" />
+                  <span className="text-[10px] font-black uppercase tracking-widest">Packing Checklist</span>
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
 

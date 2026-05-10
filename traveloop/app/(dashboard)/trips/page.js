@@ -183,6 +183,16 @@ const TripCard = ({ trip, onEdit, onDelete, onDuplicate }) => {
           </Link>
         </Button>
         <Button 
+          asChild 
+          variant="outline" 
+          className="w-10 h-10 border-2 border-black rounded-none p-0 hover:bg-green-500 hover:text-white transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none"
+          title="Packing Checklist"
+        >
+          <Link href={`/trips/${trip.id}/packing`}>
+            <CheckCircle2 className="h-4 w-4" />
+          </Link>
+        </Button>
+        <Button 
           onClick={() => onEdit(trip)}
           variant="outline" 
           className="w-10 h-10 border-2 border-black rounded-none p-0 hover:bg-blue-500 hover:text-white transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none"
@@ -200,6 +210,15 @@ const TripCard = ({ trip, onEdit, onDelete, onDuplicate }) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="rounded-none border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-0">
+            <DropdownMenuItem 
+              className="rounded-none px-4 py-2.5 cursor-pointer hover:bg-gray-100 gap-3"
+              asChild
+            >
+              <Link href={`/trips/${trip.id}/packing`} className="flex items-center gap-3 w-full">
+                <CheckCircle2 className="h-3.5 w-3.5" />
+                <span className="text-[10px] font-black uppercase tracking-widest">Packing Checklist</span>
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem 
               onClick={() => {
                 navigator.clipboard.writeText(`${window.location.origin}/trips/${trip.shareToken}/view`);

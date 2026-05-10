@@ -301,13 +301,14 @@ model Budget {
 // ============================================
 
 model PackingItem {
-  id        String          @id @default(cuid())
-  tripId    String
-  name      String
-  category  PackingCategory @default(OTHER)
-  isPacked  Boolean         @default(false)
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
+  id         String          @id @default(cuid())
+  tripId     String
+  name       String
+  category   PackingCategory @default(OTHER)
+  isPacked   Boolean         @default(false)
+  isPriority Boolean         @default(false)
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
 
   // Relations
   trip Trip @relation(fields: [tripId], references: [id], onDelete: Cascade)

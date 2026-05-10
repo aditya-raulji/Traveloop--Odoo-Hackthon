@@ -716,6 +716,12 @@ export default function AdvancedItineraryPage() {
                   className={cn("px-3 py-1 text-[10px] font-black uppercase italic transition-all", viewMode === "days" ? "bg-black text-white" : "hover:bg-gray-50")}
                 >Days</button>
               </div>
+              <Button asChild variant="outline" className="border-2 border-black rounded-none h-10 px-4 flex items-center gap-2 hover:bg-green-500 hover:text-white transition-all">
+                <Link href={`/trips/${tripId}/packing`} className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4" />
+                  <span className="text-[10px] font-black uppercase tracking-widest hidden sm:inline">Packing</span>
+                </Link>
+              </Button>
               <Button variant="outline" className="border-2 border-black rounded-none h-10 px-4">
                 <Share2 className="h-4 w-4" />
               </Button>
