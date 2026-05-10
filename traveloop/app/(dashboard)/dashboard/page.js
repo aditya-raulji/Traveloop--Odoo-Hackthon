@@ -167,6 +167,9 @@ export default function DashboardPage() {
                       src={cityImg}
                       alt={trip.name}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      onError={(e) => {
+                        e.target.src = "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=800";
+                      }}
                     />
                     <div className="absolute top-3 left-3 bg-white border-2 border-black px-2 py-1 text-[10px] font-black uppercase tracking-tighter italic">
                       {city?.name || "Global"}

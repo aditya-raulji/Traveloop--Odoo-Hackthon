@@ -354,7 +354,16 @@ export default function CreateTripPage() {
                         <div 
                           className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
                           style={{ backgroundImage: `url('${activity.imageUrl || "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400&q=80"}')` }}
-                        />
+                        >
+                          {/* Hidden img tag just to detect load errors */}
+                          <img 
+                            src={activity.imageUrl} 
+                            className="hidden" 
+                            onError={(e) => {
+                              e.target.parentElement.style.backgroundImage = "url('https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?auto=format&fit=crop&q=80&w=600')";
+                            }} 
+                          />
+                        </div>
                         <div className={cn(
                           "absolute inset-0 bg-black/40 transition-colors",
                           selectedActivities.includes(activity.id) ? "bg-blue-600/40" : "group-hover:bg-black/20"

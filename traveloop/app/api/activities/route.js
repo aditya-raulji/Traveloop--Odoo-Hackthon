@@ -38,22 +38,26 @@ export async function GET(request) {
         { name: "Nightlife Highlights", type: "NIGHTLIFE", query: "nightlife" },
       ];
 
-      // Fetch real images from Pexels for each activity
       const activityPromises = templates.map(async (t, i) => {
-        let imageUrl = `https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=600&q=80`; // Fallback
+        // High-quality dynamic fallback using Unsplash
+        let imageUrl = `https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80`;
         
         try {
           if (PEXELS_API_KEY) {
             const pexelsRes = await fetch(
               `https://api.pexels.com/v1/search?query=${encodeURIComponent(cityName + " " + t.query)}&per_page=1`,
               {
-                headers: { Authorization: PEXELS_API_KEY }
+                headers: { Authorization: PEXELS_API_KEY },
+                next: { revalidate: 3600 } // Cache for 1 hour
               }
             );
             if (pexelsRes.ok) {
               const data = await pexelsRes.json();
               if (data.photos && data.photos.length > 0) {
                 imageUrl = data.photos[0].src.large;
+              } else {
+                // If no specific photo, use a keyword-based Unsplash photo
+                imageUrl = `https://images.unsplash.com/photo-1517816743773-6e0fd518b4a6?auto=format&fit=crop&q=80&w=800`;
               }
             }
           }
