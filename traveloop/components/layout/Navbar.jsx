@@ -73,10 +73,10 @@ export default function Navbar() {
       <div className="flex h-14 items-center px-4 lg:px-6 gap-4">
         {/* Mobile menu */}
         <Sheet>
-          <SheetTrigger asChild>
-            <button className="lg:hidden p-2 border-2 border-black hover:bg-black hover:text-white transition-colors">
+          <SheetTrigger>
+            <div role="button" className="lg:hidden p-2 border-2 border-black hover:bg-black hover:text-white transition-colors cursor-pointer">
               <Menu className="h-4 w-4" />
-            </button>
+            </div>
           </SheetTrigger>
           <SheetContent side="left" className="w-72 border-r-2 border-black rounded-none p-0">
             <SheetHeader className="p-6 border-b-2 border-black bg-black text-white">
@@ -176,15 +176,13 @@ export default function Navbar() {
 
           {/* User avatar dropdown */}
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="focus:outline-none">
-                <Avatar className="h-8 w-8 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(59,130,246,1)] transition-shadow cursor-pointer rounded-none">
-                  <AvatarImage src={session?.user?.image || ""} />
-                  <AvatarFallback className="bg-black text-white font-black text-xs rounded-none">
-                    {initials}
-                  </AvatarFallback>
-                </Avatar>
-              </button>
+            <DropdownMenuTrigger>
+              <Avatar className="h-8 w-8 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(59,130,246,1)] transition-shadow cursor-pointer rounded-none">
+                <AvatarImage src={session?.user?.image || ""} />
+                <AvatarFallback className="bg-black text-white font-black text-xs rounded-none">
+                  {initials}
+                </AvatarFallback>
+              </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"

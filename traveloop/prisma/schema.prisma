@@ -216,15 +216,18 @@ model StopActivity {
 // Section = flexible itinerary block (hotel, transport, activity, etc.)
 // Used in the "Build Itinerary" screen (Screen 5)
 model Section {
-  id          String    @id @default(cuid())
-  tripId      String
-  order       Int       @default(0)
-  title       String?
-  description String?   @db.Text
-  startDate   DateTime?
-  endDate     DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id            String      @id @default(cuid())
+  tripId        String
+  order         Int         @default(0)
+  title         String?
+  description   String?     @db.Text
+  sectionType   SectionType @default(GENERAL)
+  startDate     DateTime?
+  endDate       DateTime?
+  isPlanned     Boolean     @default(false)
+  attachmentUrl String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 
   // Relations
   trip          Trip            @relation(fields: [tripId], references: [id], onDelete: Cascade)
@@ -233,18 +236,26 @@ model Section {
   @@map("sections")
 }
 
+enum SectionType {
+  TRAVEL
+  HOTEL
+  FOOD
+  ACTIVITY
+  GENERAL
+}
+
 // Budget per section (e.g., Hotel: ₹5000, Transport: ₹2000)
 model SectionBudget {
-  id          String   @id @default(cuid())
-  sectionId   String
-  category    BudgetCategory @default(MISCELLANEOUS)
-  amount      Float    @default(0)
-  description String?
+  id             String   @id @default(cuid())
+  sectionId      String
+  category       BudgetCategory @default(MISCELLANEOUS)
+  amount         Float    @default(0)
+  description    String?
   billingDetails String? // e.g., "4 nights", "1 ticket"
-  unitCost    Float?
-  quantity    Int      @default(1)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  unitCost       Float?
+  quantity       Int      @default(1)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   // Relations
   section Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)

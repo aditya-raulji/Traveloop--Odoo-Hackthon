@@ -20,7 +20,7 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { Loader2, User, Lock, Compass, Eye, EyeOff } from "lucide-react";
+import { Loader2, User, Lock, Compass, Eye, EyeOff, Plane } from "lucide-react";
 
 const loginSchema = z.object({
   username: z
@@ -235,8 +235,8 @@ export default function LoginPage() {
         <div className="mt-6 flex items-center gap-4 opacity-20">
           <div className="flex-1 border-t border-gray-300" />
           <div className="border-2 border-gray-400 rounded-full px-4 py-1 rotate-[-8deg]">
-            <span className="text-[9px] font-black uppercase tracking-widest text-gray-500">
-              TRAVELOOP ✈
+            <span className="text-[9px] font-black uppercase tracking-widest text-gray-500 flex items-center gap-1">
+              TRAVELOOP <Plane className="h-2 w-2" />
             </span>
           </div>
           <div className="flex-1 border-t border-gray-300" />

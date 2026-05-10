@@ -34,6 +34,7 @@ import {
   Lock,
   Eye,
   EyeOff,
+  Plane,
 } from "lucide-react";
 
 const signupSchema = z.object({
@@ -110,7 +111,7 @@ export default function SignupPage() {
       const data = await response.json();
 
       if (response.ok) {
-        toast.success("Account created! Welcome to Traveloop! ✈️");
+        toast.success("Account created! Welcome to Traveloop!");
         router.push("/login");
       } else {
         toast.error(data.message || "Registration failed. Try again.");
@@ -433,8 +434,8 @@ export default function SignupPage() {
         <div className="mt-6 flex items-center gap-4 opacity-20">
           <div className="flex-1 border-t border-gray-300" />
           <div className="border-2 border-gray-400 rounded-full px-4 py-1 rotate-[8deg]">
-            <span className="text-[9px] font-black uppercase tracking-widest text-gray-500">
-              ✈ EXPLORER
+            <span className="text-[9px] font-black uppercase tracking-widest text-gray-500 flex items-center gap-1">
+              <Plane className="h-2 w-2" /> EXPLORER
             </span>
           </div>
           <div className="flex-1 border-t border-gray-300" />
