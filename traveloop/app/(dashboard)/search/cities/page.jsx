@@ -11,6 +11,9 @@ import { Suspense } from "react";
 function CitiesContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "";
+  const filter = searchParams.get("filter") || "";
+  const sort = searchParams.get("sort") || "";
+  const group = searchParams.get("group") || "";
   
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,15 +22,15 @@ function CitiesContent() {
 
   useEffect(() => {
     const fetchResults = async () => {
-      if (!query || query.length < 2) {
-        setResults([]);
-        setLoading(false);
-        return;
-      }
-
       setLoading(true);
       try {
-        const res = await fetch(`/api/cities?search=${encodeURIComponent(query)}`);
+        const params = new URLSearchParams();
+        if (query) params.set("search", query);
+        if (filter) params.set("filter", filter);
+        if (sort) params.set("sort", sort);
+        if (group) params.set("group", group);
+
+        const res = await fetch(`/api/cities?${params.toString()}`);
         if (!res.ok) throw new Error("Fetch failed");
         const data = await res.json();
         setResults(Array.isArray(data) ? data : []);
@@ -48,7 +51,7 @@ function CitiesContent() {
     };
 
     fetchResults();
-  }, [query]);
+  }, [query, filter, sort, group]);
 
   const toggleSave = async (id) => {
     try {

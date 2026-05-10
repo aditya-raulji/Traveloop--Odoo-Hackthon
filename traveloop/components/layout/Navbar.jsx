@@ -163,6 +163,15 @@ export default function Navbar() {
                   placeholder="Search..."
                   className="h-8 border-2 border-black rounded-none text-xs font-mono focus-visible:ring-0"
                   onBlur={() => setSearchOpen(false)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      const term = e.currentTarget.value;
+                      if (term) {
+                        window.location.href = `/search/cities?q=${encodeURIComponent(term)}`;
+                      }
+                      setSearchOpen(false);
+                    }
+                  }}
                 />
               </motion.div>
             )}

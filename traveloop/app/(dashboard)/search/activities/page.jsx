@@ -11,6 +11,9 @@ import { Suspense } from "react";
 function ActivitiesContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "";
+  const filter = searchParams.get("filter") || "";
+  const sort = searchParams.get("sort") || "";
+  const group = searchParams.get("group") || "";
   
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +24,13 @@ function ActivitiesContent() {
     const fetchResults = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/activities?search=${encodeURIComponent(query)}`);
+        const params = new URLSearchParams();
+        if (query) params.set("search", query);
+        if (filter) params.set("filter", filter);
+        if (sort) params.set("sort", sort);
+        if (group) params.set("group", group);
+
+        const res = await fetch(`/api/activities?${params.toString()}`);
         if (!res.ok) throw new Error("Fetch failed");
         const data = await res.json();
         setResults(Array.isArray(data) ? data : []);
@@ -42,7 +51,7 @@ function ActivitiesContent() {
     };
 
     fetchResults();
-  }, [query]);
+  }, [query, filter, sort, group]);
 
   const toggleSave = async (id) => {
     try {

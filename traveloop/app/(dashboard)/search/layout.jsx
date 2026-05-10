@@ -2,9 +2,15 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Search, SlidersHorizontal, ArrowUpDown, LayoutGrid, X, Loader2 } from "lucide-react";
+import { Search, SlidersHorizontal, ArrowUpDown, LayoutGrid, X, Loader2, ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -40,8 +46,15 @@ function SearchContent({ children }) {
         setRecentSearches(updated);
       }
     }, 300),
-    [pathname, searchParams]
+    [pathname, searchParams, router]
   );
+
+  const updateParams = (key, value) => {
+    const params = new URLSearchParams(searchParams);
+    if (value) params.set(key, value);
+    else params.delete(key);
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -125,15 +138,44 @@ function SearchContent({ children }) {
           </div>
 
           <div className="flex gap-2 h-14">
-            <Button variant="outline" className="h-full border-4 border-black rounded-none font-black uppercase italic text-xs px-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all">
-              <LayoutGrid className="h-4 w-4 mr-2" /> Group By
-            </Button>
-            <Button variant="outline" className="h-full border-4 border-black rounded-none font-black uppercase italic text-xs px-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all">
-              <SlidersHorizontal className="h-4 w-4 mr-2" /> Filter
-            </Button>
-            <Button variant="outline" className="h-full border-4 border-black rounded-none font-black uppercase italic text-xs px-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all">
-              <ArrowUpDown className="h-4 w-4 mr-2" /> Sort By
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="h-full border-4 border-black rounded-none font-black uppercase italic text-xs px-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all">
+                  <LayoutGrid className="h-4 w-4 mr-2" /> Group By <ChevronDown className="ml-2 h-3 w-3" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="rounded-none border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <DropdownMenuItem onClick={() => updateParams("group", "region")} className="rounded-none font-black uppercase italic text-[10px] cursor-pointer">Region</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => updateParams("group", "cost")} className="rounded-none font-black uppercase italic text-[10px] cursor-pointer">Cost Index</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => updateParams("group", null)} className="rounded-none font-black uppercase italic text-[10px] cursor-pointer">None</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="h-full border-4 border-black rounded-none font-black uppercase italic text-xs px-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all">
+                  <SlidersHorizontal className="h-4 w-4 mr-2" /> Filter <ChevronDown className="ml-2 h-3 w-3" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="rounded-none border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <DropdownMenuItem onClick={() => updateParams("filter", "budget")} className="rounded-none font-black uppercase italic text-[10px] cursor-pointer">Budget Friendly</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => updateParams("filter", "popular")} className="rounded-none font-black uppercase italic text-[10px] cursor-pointer">Popular Only</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => updateParams("filter", null)} className="rounded-none font-black uppercase italic text-[10px] cursor-pointer">Clear Filters</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="h-full border-4 border-black rounded-none font-black uppercase italic text-xs px-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all">
+                  <ArrowUpDown className="h-4 w-4 mr-2" /> Sort By <ChevronDown className="ml-2 h-3 w-3" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="rounded-none border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <DropdownMenuItem onClick={() => updateParams("sort", "popularity")} className="rounded-none font-black uppercase italic text-[10px] cursor-pointer">Popularity</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => updateParams("sort", "name")} className="rounded-none font-black uppercase italic text-[10px] cursor-pointer">Name (A-Z)</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => updateParams("sort", null)} className="rounded-none font-black uppercase italic text-[10px] cursor-pointer">Default</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
